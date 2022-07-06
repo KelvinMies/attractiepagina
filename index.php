@@ -25,9 +25,65 @@ require_once 'admin/backend/config.php';
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia modi dolore magnam! Iste libero voluptatum autem, sapiente ullam earum nostrum sed magnam vel laboriosam quibusdam, officia, esse vitae dignissimos nulla?
         </aside>
         <main>
-            <!-- hier komen de attractiekaartjes -->
+            <?php  
+            
+                require_once 'admin/backend/conn.php';
+                $query = "SELECT * FROM rides";
+                $statement = $conn->prepare($query);
+                $statement->execute();
+                $rides = $statement->fetchAll(PDO::FETCH_ASSOC);
+            ?>
+            <div class="grid">
+            <?php foreach($rides as $ride): ?>
+            
+                
+                <?php if($ride['fast_pass'] == 0): ?>
+                <div class="kaart">
+                    
+                    <img src="img/attracties/<?php echo $ride['img_file']; ?>" height="200">
+                    <div class="kaarttekst">
+                        <h1><?php echo $ride['themeland']; ?></h1>
+                        <h2><?php echo $ride['title']; ?></h2>
+                        <p><?php echo $ride['description']; ?></p>
+                        <?php if(isset($ride['min_length'])): ?>
+                    
+                            <h3><?php echo $ride['min_length']; ?>cm minimale lengte</h3>
+                         
+                        <?php endif; ?>
+                    </div>
+                </div> 
+
+                <?php elseif($ride['fast_pass'] == 1): ?>
+                <div class="kaart2">                   
+                    <img src="img/attracties/<?php echo $ride['img_file']; ?>" height="200"> 
+                    <div class="kaart2divs"> 
+                        <div class="kaart2div1">
+                            <h1><?php echo $ride['themeland']; ?></h1>
+                            <h2><?php echo $ride['title']; ?></h2>
+                            <p><?php echo $ride['description']; ?></p>
+                            <?php if(isset($ride['min_length'])): ?>                
+                                <h3><?php echo $ride['min_length']; ?>cm minimale lengte</h3>                     
+                            <?php endif; ?>
+                        </div>
+                        <div class="kaart2div2">
+                            <div class="kaart2div2tekst1">
+                                <p>Deze attractie is alleen te<br>bezoeken met een fastpass</p>
+                            </div>
+                            <div class="kaart2div2tekst2">
+                                <p>Boek nu en sla de wachtrij over:</p>
+                                <div class="kaart2div2tekst2img">
+                                    <button><img src="img/Ticket.png">FAST PASS</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>                 
+                               
+        <?php endforeach; ?>                
+            </div>
         </main>
-    </div>
+    
 
 </body>
 
